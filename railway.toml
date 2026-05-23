@@ -2,6 +2,6 @@
 dockerfile = "compose/linkedin/Dockerfile"
 
 [deploy]
-startCommand = "bash -c \"python manage.py runserver 0.0.0.0:$PORT\""
+startCommand = "bash railway-start.sh"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
