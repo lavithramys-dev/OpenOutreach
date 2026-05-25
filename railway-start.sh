@@ -10,6 +10,9 @@ if [ -n "$DJANGO_SUPERUSER_USERNAME" ] && [ -n "$DJANGO_SUPERUSER_PASSWORD" ] &&
     python manage.py createsuperuser --noinput || echo "Superuser already exists."
 fi
 
+# Run auto onboarding if environment variables are provided
+python auto_onboard.py
+
 # We check an environment variable to decide whether to run the web server or the daemon
 if [ "$RUN_DAEMON" = "true" ]; then
     echo "Starting automation daemon..."
