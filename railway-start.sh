@@ -13,8 +13,8 @@ fi
 # We check an environment variable to decide whether to run the web server or the daemon
 if [ "$RUN_DAEMON" = "true" ]; then
     echo "Starting automation daemon..."
-    # Make sure xvfb and vnc are running if needed by the entrypoint
-    exec ./compose/linkedin/start
+    # Make sure the script is executable or run it via bash directly
+    exec bash ./compose/linkedin/start
 else
     echo "Starting web server..."
     exec python manage.py runserver 0.0.0.0:$PORT
