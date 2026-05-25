@@ -122,6 +122,9 @@ def start_browser_session(session: "AccountSession"):
 
     storage_state = cookie_data if cookie_data else None
     if storage_state:
+        # If the user pasted a raw list from EditThisCookie, wrap it for Playwright
+        if isinstance(storage_state, list):
+            storage_state = {"cookies": storage_state, "origins": []}
         logger.info("Loading saved session for %s", session)
 
     session.page, session.context, session.browser, session.playwright = launch_browser(storage_state=storage_state)
