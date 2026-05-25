@@ -36,6 +36,8 @@ CSRF_TRUSTED_ORIGINS.append("https://openoutreach-production-0045.up.railway.app
 CSRF_TRUSTED_ORIGINS.append("https://*.up.railway.app")
 
 INSTALLED_APPS = [
+    "unfold",
+    "unfold.contrib.filters",
     "django.contrib.sites",
     "django.contrib.admin",
     "django.contrib.auth",

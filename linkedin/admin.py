@@ -1,5 +1,6 @@
 # linkedin/admin.py
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 
 from chat.models import ChatMessage
 
@@ -7,7 +8,7 @@ from linkedin.models import ActionLog, Campaign, LinkedInProfile, SearchKeyword,
 
 
 @admin.register(SiteConfig)
-class SiteConfigAdmin(admin.ModelAdmin):
+class SiteConfigAdmin(ModelAdmin):
     list_display = ("__str__", "llm_provider", "ai_model", "llm_api_base")
 
     def has_add_permission(self, request):
@@ -18,27 +19,27 @@ class SiteConfigAdmin(admin.ModelAdmin):
 
 
 @admin.register(Campaign)
-class CampaignAdmin(admin.ModelAdmin):
+class CampaignAdmin(ModelAdmin):
     list_display = ("name", "booking_link", "is_freemium", "action_fraction")
     filter_horizontal = ("users",)
 
 
 @admin.register(LinkedInProfile)
-class LinkedInProfileAdmin(admin.ModelAdmin):
+class LinkedInProfileAdmin(ModelAdmin):
     list_display = ("user", "linkedin_username", "active", "legal_accepted")
     list_filter = ("active",)
     raw_id_fields = ("user", "self_lead")
 
 
 @admin.register(SearchKeyword)
-class SearchKeywordAdmin(admin.ModelAdmin):
+class SearchKeywordAdmin(ModelAdmin):
     list_display = ("keyword", "campaign", "used", "used_at")
     list_filter = ("used", "campaign")
     raw_id_fields = ("campaign",)
 
 
 @admin.register(ActionLog)
-class ActionLogAdmin(admin.ModelAdmin):
+class ActionLogAdmin(ModelAdmin):
     list_display = ("action_type", "linkedin_profile", "campaign", "created_at")
     list_filter = ("action_type", "campaign")
     raw_id_fields = ("linkedin_profile", "campaign")
@@ -47,7 +48,7 @@ class ActionLogAdmin(admin.ModelAdmin):
 
 
 @admin.register(Task)
-class TaskAdmin(admin.ModelAdmin):
+class TaskAdmin(ModelAdmin):
     list_display = ("task_type", "status", "scheduled_at", "payload", "created_at")
     list_filter = ("task_type", "status")
     readonly_fields = (
@@ -58,7 +59,7 @@ class TaskAdmin(admin.ModelAdmin):
 
 
 @admin.register(ChatMessage)
-class ChatMessageAdmin(admin.ModelAdmin):
+class ChatMessageAdmin(ModelAdmin):
     list_display = ("content_type", "object_id", "owner", "creation_date")
     list_filter = ("content_type", "owner")
     raw_id_fields = ("owner", "answer_to", "topic")
