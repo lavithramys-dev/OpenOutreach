@@ -32,7 +32,24 @@ if os.environ.get("AUTO_ONBOARD") == "true":
         if config.linkedin_email and config.linkedin_password and config.llm_api_key:
             apply(config)
             print("Auto-onboarding successfully applied.")
+            
+            # Inject cookies if provided
+            cookie_json = os.environ.get("LINKEDIN_COOKIES_JSON", "")
+            if cookie_json:
+                import json
+                try:
+                    from linkedin.models import LinkedInProfile
+                    profile = LinkedInProfile.objects.get(linkedin_username=config.linkedin_email)
+                    cookies = json.loads(cookie_json)
+                    if isinstance(cookies, list):
+                        cookies = {"cookies": cookies, "origins": []}
+                    profile.cookie_data = cookies
+                    profile.save(update_fields=["cookie_data"])
+                    print("Cookies successfully injected from environment variables.")
+                except Exception as e:
+                    print(f"Error injecting cookies: {e}")
         else:
             print("WARNING: LINKEDIN_EMAIL, LINKEDIN_PASSWORD, or LLM_API_KEY missing from environment variables.")
     else:
         print("Onboarding already complete, skipping auto-onboard.")
+
