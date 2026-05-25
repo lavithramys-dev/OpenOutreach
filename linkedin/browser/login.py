@@ -125,6 +125,18 @@ def start_browser_session(session: "AccountSession"):
         # If the user pasted a raw list from EditThisCookie, wrap it for Playwright
         if isinstance(storage_state, list):
             storage_state = {"cookies": storage_state, "origins": []}
+            
+        # Sanitize sameSite for Playwright strictness
+        for cookie in storage_state.get("cookies", []):
+            if "sameSite" in cookie:
+                val = str(cookie["sameSite"]).capitalize()
+                if val in ["Strict", "Lax", "None"]:
+                    cookie["sameSite"] = val
+                elif val.lower() in ["no_restriction", "unspecified"]:
+                    cookie["sameSite"] = "None"
+                else:
+                    del cookie["sameSite"]
+
         logger.info("Loading saved session for %s", session)
 
     session.page, session.context, session.browser, session.playwright = launch_browser(storage_state=storage_state)
